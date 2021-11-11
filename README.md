@@ -11,8 +11,6 @@ In the project directory, you can run:
 Installs/ updates the dependent libraries for the application.\
 When you add, remove or change libraries, you have to commit to git both package.json,package-lock.json
 
-### `npm run test`
-
 ### `npm start`
 
 Runs the app in the development mode.\
