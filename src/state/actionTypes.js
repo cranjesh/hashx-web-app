@@ -1,0 +1,1 @@
+export const SETUP_SESSION = "SETUP_SESSION";
