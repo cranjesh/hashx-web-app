@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
+/**
+ * THIS IS JUST A SAMPLE REFERENCE FOR HOOKS TO INITIATE COMPONENTS
+ * @param {*} param0 
+ * @returns 
+ */
 const UseLoginByPasswordApi = ({
     email,
     password
@@ -13,8 +18,11 @@ const UseLoginByPasswordApi = ({
                 const loginResp = await axios.post(
                     'https://hashx-login-service.herokuapp.com/loginWithPassword',
                     {
+                        Username: password,
                         Email: email,
-                        HashedPassword: password
+                        SaltedHash: password,
+                        Lat: 1,
+                        Long: 1
                     })
                 setLoginData({ done: true, data: loginResp.data })
             } catch (err) {
