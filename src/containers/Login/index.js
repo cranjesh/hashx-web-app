@@ -14,12 +14,15 @@ const Login = () => {
         const loginResp = await axios.post(
             'https://hashx-login-service.herokuapp.com/loginWithPassword',
             {
+                Username: password,
                 Email: email,
-                HashedPassword: password
+                SaltedHash: password,
+                Lat: 1,
+                Long: 1
             })
         const dtStr = (new Date()).toTimeString()
         console.log('loginResp', loginResp)
-        const session = { SessionKey: `key${dtStr}`, SessionUUID: `sid${dtStr}`, UserUUID: `uid${dtStr}` }
+        const session = loginResp.data
         dispatch(setupUserSession(session))
         setData(session)
     }
