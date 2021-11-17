@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { useSelector, useDispatch } from 'react-redux'
 import axios from "axios"
 import LoginForm from "../../components/material-ui/LoginForm";
-import { setupUserSession } from "./actions";
+import { setupUserSession, loginSetSession } from "./actions";
 
 const Login = () => {
     const [data, setData] = useState(null)
@@ -26,6 +26,9 @@ const Login = () => {
         dispatch(setupUserSession(session))
         setData(session)
     }
-    return <LoginForm onButtonClick={onLogin} />
+    const onLoginThunk = async (email, password) => {
+        dispatch(loginSetSession(email, password))
+    }
+    return <LoginForm onButtonClick={onLoginThunk} />
 }
 export default Login
