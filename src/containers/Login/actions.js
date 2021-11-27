@@ -18,7 +18,7 @@ export function loginSetSession(email, password) {
         Long: 1
       })
     console.log('thunk loginResp', loginResp)
-    const sessionData = loginResp.data
+    const sessionData = loginResp.data.data
     dispatch(setupUserSession(sessionData))
   }
 }
