@@ -7,7 +7,7 @@ const initialState = {
 function loginReducer(state = initialState, action) {
   if (action.type === SETUP_SESSION) {
     return Object.assign({}, state, {
-      sessions: state.sessions.concat(action.payload)
+      sessions: state.sessions.concat(action.sessionData)
     });
   }
   return state;
