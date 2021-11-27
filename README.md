@@ -2,6 +2,12 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+# Storybook is already added, just some background on how to add it was added
+
+In the project directory, you can run:
+
+### `npx -p @storybook/cli sb init`
+
 ## Available Scripts
 
 In the project directory, you can run:
