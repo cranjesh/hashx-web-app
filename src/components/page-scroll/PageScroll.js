@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react'
 // import { setFeedCurrCardIndex } from '../../containers/FeedPage/actions'
 import ReactPageScroller from "react-page-scroller";
 import Image from "./Image";
-import { useReadIdentityApi } from '../custom-hooks/readIdentityApi'
+import { useReadIdentityApi, identityDataPost } from '../custom-hooks/readIdentityApi'
 import "./index.css";
 
-const images = [
+let images = [
   {
     src: "https://images.unsplash.com/photo-1583394838336-acd977736f90?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8aGVhZHBob25lfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60",
     title: "seinheiser",
@@ -61,7 +61,9 @@ const images = [
     src: "https://images.unsplash.com/photo-1533575349875-5f372f88e25b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTQwfHxoZWFkcGhvbmV8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60",
     title: "seinheiser",
     id:"10"
-  },
+  }
+];
+let images2 = [
   {
     src: "https://images.unsplash.com/photo-1590845947676-fa2576f401b2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTM5fHxoZWFkcGhvbmV8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60",
     title: "seinheiser",
@@ -124,6 +126,9 @@ const images = [
 const PageScroll = () => {
   const userUUID  = localStorage.getItem('UserUUID')
   console.log('userUUID', userUUID)
+  let imagesData = useReadIdentityApi({
+    userUUID
+  })
   // const dispatch = useDispatch()
   // const leftCardIndex = useSelector((state) => state.feedReducer.leftCardIndex)
   // const cardIndex = leftCardIndex > -1 ? leftCardIndex : 0
@@ -131,22 +136,12 @@ const PageScroll = () => {
   const [currentPage, setCurrentPage] = useState(2)
   // const [currentPage, setCurrentPage] = useState(2)
   // const [didMount, setDidMount] = useState(true)
-  let imagesData = useReadIdentityApi({
-    userUUID
-  })
-
-  if (!imagesData.done) {
-    return (
-      <>Loading</>
-    )
-  }
-
-  if (imagesData.done && !imagesData) {
-    return <>No Data</>
-  }
   
   // dont use imagesData
-  // useEffect(() => {
+  // let imagesState = images;
+  const [imagesState, setImagesState] = useState(images)
+
+  useEffect(() => {
     // console.log('PageScroll.useEffect currentPage', currentPage)
     // setDidMount(true)
     // const lastCardIndex = localStorage.getItem('lastCardIndex') | 0;
@@ -154,9 +149,10 @@ const PageScroll = () => {
     // if(lastCardIndex >=0){
     // setCurrentPage(lastCardIndex)
     // }
-  // }, [])
+    // setImagesState(imagesData)
+  }, [])
 
-  const handlePageChange = number => {
+  const handlePageChange = async (number) => {
     console.log('PageScroll.handlePageChange', currentPage)
     // const lastCardIndex = localStorage.getItem('lastCardIndex');
     // console.log('PageScroll.handlePageChange',currentPage,lastCardIndex,number)
@@ -173,8 +169,25 @@ const PageScroll = () => {
     //   localStorage.setItem('lastCardIndex', number);
     // dispatch(setFeedCurrCardIndex(number))
     setCurrentPage(number)
+    if(number === images.length-1 && imagesState.length === images.length){
+      console.log('lazy loaded number, imagesState.length, images2.length', number, imagesState.length, images2.length, (imagesState.concat(images2)).length)
+      setImagesState(imagesState.concat(images2))
+      imagesData = await identityDataPost({
+        userUUID
+      })
+    }
     //}
   };
+
+  // if (!imagesData.done) {
+  //   return (
+  //     <>Loading</>
+  //   )
+  // }
+
+  // if (imagesData.done && !imagesData) {
+  //   return <>No Data</>
+  // }
 
   return (
     <div className="demo-page-contain">
@@ -186,7 +199,7 @@ const PageScroll = () => {
         customPageNumber={currentPage}
       >
         {
-          images.map(img => <Image key={img.src} src={img.src} title={img.title} />)
+          imagesState.map(img => <Image key={img.src} src={img.src} title={img.title} />)
         }
       </ReactPageScroller>
     </div>
