@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-/**
- * THIS IS JUST A SAMPLE REFERENCE FOR HOOKS TO INITIATE COMPONENTS
- * @param {*} param0 
- * @returns 
- */
+
+const identityDataPost = (UserUUID) => axios.post(
+    'https://hashx-api-identity-read.herokuapp.com/readIdentity',
+    {
+        UserUUID
+    })
+
 const useReadIdentityApi = ({
     userUUID
 }) => {
@@ -14,11 +16,7 @@ const useReadIdentityApi = ({
     useEffect(() => {
         const sendIdentityDataReq = async () => {
             try {
-                const identityDataResp = await axios.post(
-                    'https://hashx-api-identity-read.herokuapp.com/readIdentity',
-                    {
-                        UserUUID: userUUID
-                    })
+                const identityDataResp = await identityDataPost(userUUID)
                 setIdentityData({ done: true, data: identityDataResp.data })
             } catch (err) {
                 console.log('sendIdentityDataReq err', err)
@@ -31,4 +29,4 @@ const useReadIdentityApi = ({
     return identityData
 }
 
-export { useReadIdentityApi }
+export { identityDataPost, useReadIdentityApi }
