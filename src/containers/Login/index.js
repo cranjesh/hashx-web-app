@@ -3,8 +3,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import axios from "axios"
 import LoginForm from "../../components/material-ui/LoginForm";
 import { setupUserSession, loginSetSession } from "./actions";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+    const navigate = useNavigate();
     const [data, setData] = useState(null)
     const dispatch = useDispatch()
     const sessions = useSelector((state) => state.loginReducer.sessions)
@@ -25,10 +27,11 @@ const Login = () => {
         const session = loginResp.data
         dispatch(setupUserSession(session))
         setData(session)
+        navigate("/home");
     }
     const onLoginThunk = async (email, password) => {
         dispatch(loginSetSession(email, password))
     }
-    return <LoginForm onButtonClick={onLoginThunk} />
+    return <LoginForm onButtonClick={onLogin} />
 }
 export default Login
