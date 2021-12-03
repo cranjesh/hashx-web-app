@@ -22,11 +22,12 @@ const Login = () => {
                 Lat: 1,
                 Long: 1
             })
-        const dtStr = (new Date()).toTimeString()
         console.log('loginResp', loginResp)
-        const session = loginResp.data
+        const session = loginResp?.data?.data
         dispatch(setupUserSession(session))
         setData(session)
+        localStorage.setItem('SessionUUID', session?.SessionUUID ? session?.SessionUUID: '')
+        localStorage.setItem('UserUUID', session?.UserUUID ? session?.UserUUID: '')
         navigate("/home");
     }
     const onLoginThunk = async (email, password) => {
